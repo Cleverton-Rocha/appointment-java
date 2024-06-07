@@ -1,16 +1,11 @@
-FROM ubuntu:latest AS build
+FROM openjdk:21
 
-RUN apt-get update
-RUN apt-get install openjdk-21-jdk -y
 COPY . .
 
-RUN apt-get install maven -y
-RUN mvn clean install
+RUN ./mvnw clean install -DskipTests
 
-FROM openjdk:21-jdk-slim
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres
+ENV SPRING_DATASOURCE_USERNAME=postgres.vtzcunndkkiwbgneufkl
+ENV SPRING_DATASOURCE_PASSWORD=Allonsy908@
 
-EXPOSE 8080
-
-COPY --from=build /target/appointment-0.0.1.jar app.jar
-
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT ["java", "-jar", "target/appointment-0.0.1.jar"]
