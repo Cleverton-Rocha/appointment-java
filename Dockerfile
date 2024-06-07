@@ -1,7 +1,7 @@
-FROM openjdk:17
+FROM openjdk:21
 
-WORKDIR /usr/src/app
+COPY . .
 
-COPY target/appointment-0.0.1-SNAPSHOT.jar .
+RUN ./mvnw clean install -DskipTests
 
-CMD ["java", "-jar", "appointment-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "target/appointment-0.0.1-SNAPSHOT.jar"]
